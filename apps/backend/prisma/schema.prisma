@@ -1,0 +1,58 @@
+// Banco próprio da TAG Resgate — independente do SAER. SQLite por padrão (zero configuração
+// para rodar localmente); para produção, troque "provider" para "postgresql" e aponte
+// DATABASE_URL para um Postgres próprio (ex.: um projeto Supabase novo, só desta aplicação).
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Um único modelo: conta de acesso (e-mail/senha) + ficha de saúde/emergência, já que aqui não
+// existe um "Cadastro Funcional" externo para vincular (cadastro livre, qualquer pessoa).
+model Usuario {
+  id        String @id @default(cuid())
+
+  // Identificação
+  nome          String
+  identificador String? // documento/matrícula livre — opcional, sem validação externa
+  cargo         String?
+  organizacao   String?
+  foto          String? // caminho público do arquivo em /uploads
+
+  // Acesso
+  email    String  @unique
+  senhaHash String
+  ativo    Boolean @default(true)
+
+  // Ficha de saúde/emergência — mesmos campos da ficha pública
+  tipoSanguineo          String?
+  planoSaude             String?
+  operadoraSaude         String?
+  numeroCarteirinha      String?
+  condicaoSaude          String?
+  telefoneEmergencia     String?
+  contatoEmergencia      String?
+  medicamentosContinuo   String?
+  descricaoMedicamentos  String?
+  alergiasConhecidas     String?
+  descricaoAlergia       String?
+  observacoesMedicas     String?
+
+  // Grupos de campo marcados como privados — JSON stringificado de string[] (ver
+  // src/modules/ficha/campos-visibilidade.ts). Regra geral: lista vazia = tudo público.
+  camposPrivados String @default("[]")
+
+  // Token opaco da própria tag (QR/NFC) — gerado automaticamente no cadastro
+  emergenciaToken String @unique
+
+  // "Esqueci minha senha"
+  resetCodigoHash String?
+  resetExpiraEm   DateTime?
+
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+  ultimoLoginEm DateTime?
+}

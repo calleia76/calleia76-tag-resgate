@@ -11,6 +11,7 @@ export default defineConfig({
     fileParallelism: false,
     env: {
       DATABASE_URL: 'postgresql://tagresgate:tagresgate@localhost:5433/tagresgate_test',
+      DIRECT_URL: 'postgresql://tagresgate:tagresgate@localhost:5433/tagresgate_test',
       JWT_SECRET: 'segredo-de-teste-com-mais-de-32-caracteres-xxxx',
     },
   },

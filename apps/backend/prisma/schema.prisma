@@ -6,7 +6,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // conexão direta/sessão, usada pelas migrations (pooler em modo transação não serve)
 }
 
 // Um único modelo: conta de acesso (e-mail/senha) + ficha de saúde/emergência, já que aqui não

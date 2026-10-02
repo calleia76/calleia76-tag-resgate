@@ -1,8 +1,9 @@
 import { randomUUID } from 'node:crypto'
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import { config } from '@/config/env'
 
-const PASTA_UPLOADS = path.resolve(__dirname, '../../../uploads')
+const PASTA_UPLOADS = config.uploadsDir
 
 const EXTENSAO_POR_MIME: Record<string, string> = {
   'image/jpeg': 'jpg',

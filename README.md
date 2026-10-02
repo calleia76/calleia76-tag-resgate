@@ -10,19 +10,19 @@ nenhuma dependência de arquivos, API ou banco daquele sistema.
 
 - **Frontend:** React 18 + Vite + TypeScript + Tailwind + React Router + TanStack Query.
 - **Backend:** Node.js + Express + TypeScript + Prisma.
-- **Banco:** SQLite local por padrão (zero configuração). Para produção, troque o `provider` em
-  `apps/backend/prisma/schema.prisma` para `postgresql` e aponte `DATABASE_URL` para um Postgres
-  próprio (ex.: um projeto Supabase novo, só desta aplicação).
-- **Fotos:** salvas em disco local (`apps/backend/uploads/`), servidas em `/uploads`. Para
-  produção numa VPS, basta manter essa pasta persistida fora do processo de deploy.
-- **"Esqueci minha senha":** código de 6 dígitos por e-mail (SMTP, configurável em `.env`). Sem
-  SMTP configurado, o código só aparece no log do backend — útil para testar sem precisar de um
-  provedor real (ver `apps/backend/src/modules/auth/notificador.ts`).
+- **Banco:** Postgres. Local via `docker compose up -d` (porta 5433, ver `docker-compose.yml`); em
+  produção, um Postgres próprio apontado por `DATABASE_URL`.
+- **Fotos:** salvas em disco (`UPLOADS_DIR`, padrão `apps/backend/uploads/`), servidas em
+  `/uploads`. Em produção, aponte `UPLOADS_DIR` para um volume persistente fora da pasta de deploy.
+- **"Esqueci minha senha":** código de 6 dígitos por e-mail (SMTP, configurável em `.env`). Em
+  desenvolvimento, sem SMTP, o código aparece no log do backend; em produção o backend exige
+  `SMTP_HOST` para iniciar (ver `apps/backend/src/modules/auth/notificador.ts`).
 
 ## Como rodar
 
 ```bash
 npm install
+docker compose up -d
 cp .env.example apps/backend/.env
 npm run db:generate
 npm run db:migrate
@@ -31,6 +31,8 @@ npm run dev
 
 - Frontend: http://localhost:5174
 - Backend: http://localhost:4001 (health check em `/api/health`)
+- Testes do backend: `npm test --workspace=apps/backend` (usa o banco `tagresgate_test`; crie-o
+  uma vez com `docker compose exec db psql -U tagresgate -c "CREATE DATABASE tagresgate_test"`).
 
 ## Fluxo
 
@@ -43,12 +45,9 @@ npm run dev
    ler o QR code. Mostra só saúde e contato de emergência; campos marcados como privados só
    aparecem para quem acessa logado.
 
-## Pendências conhecidas antes de produção
+## Antes de subir em produção
 
-- Trocar `JWT_SECRET` por um segredo forte.
-- Configurar SMTP real (`SMTP_*` no `.env`) para o "esqueci minha senha" funcionar fora do
-  ambiente de desenvolvimento.
-- Decidir o armazenamento de fotos em produção (disco persistente na VPS é suficiente para
-  começar; um bucket S3-compatível é mais robusto a longo prazo).
-- Migrar de SQLite para Postgres antes de qualquer uso com mais de um usuário simultâneo
-  gravando dados (SQLite não foi pensado para concorrência de escrita).
+- `NODE_ENV=production` com `JWT_SECRET` forte (mín. 32 caracteres, ex.: `openssl rand -hex 32`)
+  e `SMTP_*` configurado — o backend se recusa a iniciar sem eles.
+- `DATABASE_URL` de um Postgres de produção e `npm run db:migrate:prod` no deploy.
+- `UPLOADS_DIR` num volume persistente (ou migrar as fotos para um bucket S3-compatível).

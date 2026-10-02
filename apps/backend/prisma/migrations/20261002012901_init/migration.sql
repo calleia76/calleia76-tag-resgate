@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Usuario" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
     "identificador" TEXT,
     "cargo" TEXT,
@@ -24,10 +24,12 @@ CREATE TABLE "Usuario" (
     "camposPrivados" TEXT NOT NULL DEFAULT '[]',
     "emergenciaToken" TEXT NOT NULL,
     "resetCodigoHash" TEXT,
-    "resetExpiraEm" DATETIME,
-    "criadoEm" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "atualizadoEm" DATETIME NOT NULL,
-    "ultimoLoginEm" DATETIME
+    "resetExpiraEm" TIMESTAMP(3),
+    "criadoEm" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "atualizadoEm" TIMESTAMP(3) NOT NULL,
+    "ultimoLoginEm" TIMESTAMP(3),
+
+    CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

@@ -1,12 +1,11 @@
-// Banco próprio da TAG Resgate — independente do SAER. SQLite por padrão (zero configuração
-// para rodar localmente); para produção, troque "provider" para "postgresql" e aponte
-// DATABASE_URL para um Postgres próprio (ex.: um projeto Supabase novo, só desta aplicação).
+// Banco próprio da TAG Resgate — independente do SAER. Postgres: local via `docker compose up -d`
+// (ver docker-compose.yml) e, em produção, um Postgres próprio apontado por DATABASE_URL.
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

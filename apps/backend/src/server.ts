@@ -1,4 +1,3 @@
-import path from 'node:path'
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -17,7 +16,7 @@ app.set('trust proxy', 1)
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
 app.use(cors({ origin: config.frontendUrl, credentials: true }))
 app.use(express.json())
-app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')))
+app.use('/uploads', express.static(config.uploadsDir))
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), env: config.nodeEnv })

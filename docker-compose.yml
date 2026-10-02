@@ -1,0 +1,15 @@
+# Postgres local só para desenvolvimento (porta 5433 para não colidir com um Postgres já instalado).
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tagresgate
+      POSTGRES_PASSWORD: tagresgate
+      POSTGRES_DB: tagresgate
+    ports:
+      - "5433:5432"
+    volumes:
+      - tagresgate-pg:/var/lib/postgresql/data
+volumes:
+  tagresgate-pg:

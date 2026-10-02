@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
@@ -24,6 +26,14 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/auth', authRoutes)
 app.use('/api/ficha', fichaRoutes)
+
+// Em produção o mesmo processo entrega o site (build do Vite) e a API, num domínio só — o
+// frontend chama caminhos relativos (/api, /uploads). Em dev o Vite serve o frontend (porta 5174).
+const frontendDist = path.resolve(__dirname, '../../frontend/dist')
+if (existsSync(frontendDist)) {
+  app.use(express.static(frontendDist))
+  app.get(/^\/(?!api\/|uploads\/).*/, (_req, res) => res.sendFile(path.join(frontendDist, 'index.html')))
+}
 
 app.use(errorMiddleware as express.ErrorRequestHandler)
 

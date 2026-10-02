@@ -11,7 +11,9 @@
     "build": "npm run build --workspaces --if-present",
     "db:generate": "npm run db:generate --workspace=apps/backend",
     "db:migrate": "npm run db:migrate --workspace=apps/backend",
-    "db:studio": "npm run db:studio --workspace=apps/backend"
+    "db:studio": "npm run db:studio --workspace=apps/backend",
+    "start": "npm run start --workspace=apps/backend",
+    "db:migrate:prod": "npm run db:migrate:prod --workspace=apps/backend"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

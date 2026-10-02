@@ -42,6 +42,9 @@ export const config = {
   uploadsDir: process.env.UPLOADS_DIR
     ? path.resolve(process.env.UPLOADS_DIR)
     : path.resolve(__dirname, '../../uploads'),
+  /** "usuario:senha" — quando definido, o site inteiro (exceto /api/health) pede login HTTP
+   *  básico e não é indexado. Serve para testar em produção antes de abrir ao público. */
+  betaAcesso: process.env.BETA_ACESSO || null,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? '8h',
   smtp: {
     host: process.env.SMTP_HOST || null,

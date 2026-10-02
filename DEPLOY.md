@@ -23,7 +23,13 @@ O app roda como **um único processo Node**: o backend Express entrega a API (`/
 ## Variáveis de ambiente (painel do app)
 Copie cada linha de `apps/backend/.env.production` (não suba o arquivo para o Git):
 `NODE_ENV`, `FRONTEND_URL`, `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `JWT_EXPIRES_IN`,
-`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `UPLOADS_DIR`.
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `UPLOADS_DIR`, `BETA_ACESSO`.
+
+## Teste fechado antes de abrir ao público
+Com `BETA_ACESSO=usuario:senha`, o site inteiro pede login HTTP básico (só `/api/health` é livre) e
+sai com `X-Robots-Tag: noindex`. Publique primeiro no domínio temporário da Hostinger, faça todos
+os testes e só então: (1) associe `tagresgate.com.br` ao app, (2) **apague `BETA_ACESSO`** das
+variáveis e reinicie o app.
 
 - `PORT`: normalmente a Hostinger define sozinha; só preencha se o painel pedir.
 - `UPLOADS_DIR`: pasta **fora** da pasta do app, para as fotos sobreviverem a novos deploys

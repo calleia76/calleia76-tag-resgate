@@ -287,7 +287,7 @@ export default function Landing() {
         />
         <p className="relative text-center font-sans font-bold text-lg sm:text-2xl tracking-wide">
           <span className="text-fg-2">TECNOLOGIA QUE SALVA TEMPO. </span>
-          <span className="text-status-danger">PREPARO QUE SALVA VIDAS.</span>
+          <span className="text-status-danger">INFORMAÇÃO QUE SALVA VIDAS.</span>
         </p>
       </div>
 

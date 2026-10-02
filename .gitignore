@@ -1,6 +1,8 @@
 node_modules/
 dist/
 .env
+.env.*
+!.env.example
 *.local
 
 # Banco local (SQLite) e uploads — dados de ambiente, nunca versionados
